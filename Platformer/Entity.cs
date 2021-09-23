@@ -9,6 +9,7 @@ namespace Platformer
     {
         private readonly string textureName;
         protected readonly Sprite sprite;
+        public virtual bool Solid => false;
         public bool Dead;
 
         protected Entity(string textureName)
@@ -39,6 +40,5 @@ namespace Platformer
         {
             target.Draw(sprite);
         }
-        
     }
 }

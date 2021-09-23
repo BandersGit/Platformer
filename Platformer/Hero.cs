@@ -7,7 +7,15 @@ namespace Platformer
 {
     public class Hero : Entity
     {
+        public const float WalkSpeed = 100.0f;
+        public const float JumpForce = 250.0f;
+        public const float GravityForce = 400.0f;
+
         private bool faceRight = false;
+        private float verticalSpeed;
+        private bool isGrounded;
+        private bool isUpPressed;
+
         public Hero() : base("characters")
         {
             sprite.TextureRect = new IntRect(0, 0, 24, 24);
@@ -18,14 +26,44 @@ namespace Platformer
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
             {
-                Position -= new Vector2f(100 * deltaTime, 0);
+                scene.TryMove(this, new Vector2f(-WalkSpeed * deltaTime, 0));
                 faceRight = false;
             }
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
             {
-                Position += new Vector2f(100 * deltaTime, 0);
+                scene.TryMove(this, new Vector2f(WalkSpeed * deltaTime, 0));
                 faceRight = true;
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
+            {
+                if (isGrounded && !isUpPressed)
+                {
+                    verticalSpeed = -JumpForce;
+                    isUpPressed = true;
+                }
+                
+            }else
+            {
+                isUpPressed = false;
+            }
+
+            verticalSpeed += GravityForce * deltaTime;
+            if (verticalSpeed > 500.0f)
+            {
+                verticalSpeed = 500.0f;
+            }
+
+            isGrounded = false;
+            Vector2f velocity = new Vector2f(0, verticalSpeed * deltaTime);
+            if (scene.TryMove(this, velocity))
+            {
+                if (verticalSpeed > 0.0f)
+                {
+                    isGrounded = true;
+                }
+                verticalSpeed = 0.0f;
             }
         }
 
