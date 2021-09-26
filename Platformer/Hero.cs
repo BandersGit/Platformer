@@ -1,4 +1,3 @@
-using System;
 using SFML.System;
 using SFML.Graphics;
 using SFML.Window;
@@ -15,11 +14,45 @@ namespace Platformer
         private float verticalSpeed;
         private bool isGrounded;
         private bool isUpPressed;
+        private bool firstFrame = true;
+        private float animationTime;
 
         public Hero() : base("characters")
         {
             sprite.TextureRect = new IntRect(0, 0, 24, 24);
             sprite.Origin = new Vector2f(12, 12);
+        }
+
+        public override FloatRect Bounds 
+        {
+            get
+            {
+                var bounds = base.Bounds;
+                bounds.Left += 3;
+                bounds.Width -= 6;
+                bounds.Top += 3;
+                bounds.Height -= 3;
+                return bounds;
+            }
+        }
+
+        private void Animation(float deltaTime)
+        {
+            animationTime += deltaTime;
+
+            if (animationTime > 1/10f)
+            {
+                if (firstFrame)
+                {
+                    sprite.TextureRect = new IntRect(24, 0, 24, 24);
+                }else if (!firstFrame)
+                {
+                    sprite.TextureRect = new IntRect(0, 0, 24, 24);
+                }
+
+                animationTime = 0;
+                firstFrame = !firstFrame;
+            }
         }
 
         public override void Update(Scene scene, float deltaTime)
@@ -28,12 +61,14 @@ namespace Platformer
             {
                 scene.TryMove(this, new Vector2f(-WalkSpeed * deltaTime, 0));
                 faceRight = false;
+                Animation(deltaTime);
             }
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
             {
                 scene.TryMove(this, new Vector2f(WalkSpeed * deltaTime, 0));
                 faceRight = true;
+                Animation(deltaTime);
             }
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
@@ -56,14 +91,24 @@ namespace Platformer
             }
 
             isGrounded = false;
+            
             Vector2f velocity = new Vector2f(0, verticalSpeed * deltaTime);
             if (scene.TryMove(this, velocity))
             {
                 if (verticalSpeed > 0.0f)
                 {
                     isGrounded = true;
+                    verticalSpeed = 0.0f;
+                }else
+                {
+                    verticalSpeed = -0.5f * verticalSpeed;
                 }
-                verticalSpeed = 0.0f;
+               
+            }
+
+            if (Position.X > 800 || Position.Y > 600 || Position.X < 0 || Position.Y < 0)
+            {
+                scene.Reload();
             }
         }
 
