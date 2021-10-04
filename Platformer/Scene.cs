@@ -20,7 +20,7 @@ namespace Platformer
             entities = new List<Entity>();
         }
 
-        public void Spawn(Entity entity)
+        public void Spawn(Entity entity)  //Adds an entity to the list and loads the correct texture. 
         {
             entities.Add(entity);
             entity.Create(this);
@@ -39,7 +39,7 @@ namespace Platformer
             return texture;
         }
 
-        public bool TryMove(Entity entity, Vector2f movement)
+        public bool TryMove(Entity entity, Vector2f movement)   //Checks collisions and limits movements based on those
         {
             entity.Position += movement;
             bool collided = false;
@@ -73,7 +73,7 @@ namespace Platformer
             this.nextScene = nextScene;
         }
 
-        private void HandleSceneChange()
+        private void HandleSceneChange()    //Parses the text scene text file and creates the entities based on different characters
         {
             if (nextScene == null) return;
             entities.Clear();
@@ -97,7 +97,7 @@ namespace Platformer
 
                 string[] words = parsed.Split(" ");
                 
-                Vector2f pos = new Vector2f(int.Parse(words[1]), int.Parse(words[2]));
+                Vector2f pos = new Vector2f(int.Parse(words[1]), int.Parse(words[2])); //Parses numbers form text file into a vector position
 
                 switch (words[0])
                 {

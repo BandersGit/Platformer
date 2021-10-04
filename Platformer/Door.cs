@@ -16,7 +16,7 @@ namespace Platformer
 
         public override void Update(Scene scene, float deltaTime)
         {
-            if (scene.FindByType<Hero>(out Hero hero))
+            if (scene.FindByType<Hero>(out Hero hero))  // If there is a hero, it can collide with the opened door and load the next scene
             {
                 if (Unlocked)
                 {

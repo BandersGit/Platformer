@@ -12,7 +12,7 @@ namespace Platformer
             sprite.Origin = new Vector2f(12, 12);
         }
 
-        public override void Render(RenderTarget target)
+        public override void Render(RenderTarget target) //Uses the view bounds to render the background
         {
             View view = target.GetView();
             Vector2f topLeft = view.Center - 0.5f * view.Size;

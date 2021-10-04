@@ -36,7 +36,7 @@ namespace Platformer
             }
         }
 
-        private void Animation(float deltaTime)
+        private void Animation(float deltaTime) //Uses deltaTime with a timer that executes the frame switches
         {
             animationTime += deltaTime;
 
@@ -55,7 +55,7 @@ namespace Platformer
             }
         }
 
-        public override void Update(Scene scene, float deltaTime)
+        public override void Update(Scene scene, float deltaTime)   //For now, just movement and movement control, mainly jump control
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
             {
