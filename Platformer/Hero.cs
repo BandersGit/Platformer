@@ -36,7 +36,7 @@ namespace Platformer
             }
         }
 
-        private void Animation(float deltaTime) //Uses deltaTime with a timer that executes the frame switches
+        private void Animation(float deltaTime) //Uses deltaTime with a timer that executes the frame switches for the animation
         {
             animationTime += deltaTime;
 
